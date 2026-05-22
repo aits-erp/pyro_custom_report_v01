@@ -191,8 +191,7 @@ def get_data(filters):
 
             op.custom_private__p_or_govt__g as private_or_govt,
 
-            ld.custom_enquiry_type as enq_type,
-
+            ld.custom_enquriry_type as enq_type,
             op.transaction_date as enq_received_on,
 
             op.custom_quotation as qtn_no,
