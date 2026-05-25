@@ -23,6 +23,12 @@ def get_columns():
             "width": 250
         },
         {
+            "label": "LEAD",
+            "fieldname": "lead",
+            "fieldtype": "Data",
+            "width": 180
+        },
+        {
             "label": "Pyro Allied/Pyro Goa",
             "fieldname": "pyro_allied_pyro_goa",
             "fieldtype": "Data",
@@ -140,7 +146,7 @@ def get_columns():
             "label": "CUSTOMER CONTACT NO.",
             "fieldname": "customer_contact_no",
             "fieldtype": "Data",
-            "width": 180
+            "width": 220
         },
         {
             "label": "CUSTOMER EMAIL ID",
@@ -149,10 +155,16 @@ def get_columns():
             "width": 220
         },
         {
-            "label": "PO NO / DATE",
-            "fieldname": "po_no_date",
+            "label": "PO NO",
+            "fieldname": "po_no",
             "fieldtype": "Data",
             "width": 180
+        },
+        {
+            "label": "PO DATE",
+            "fieldname": "po_date",
+            "fieldtype": "Date",
+            "width": 140
         },
         {
             "label": "PO VALUE",
@@ -180,11 +192,23 @@ def get_data(filters):
     if filters.get("to_date"):
         conditions += f" AND op.transaction_date <= '{filters.get('to_date')}'"
 
+    if filters.get("sales_rep"):
+        conditions += f" AND op.custom_sales_rep = '{filters.get('sales_rep')}'"
+
+    if filters.get("customer"):
+        conditions += f" AND op.customer_name = '{filters.get('customer')}'"
+
+    if filters.get("enq_type"):
+        conditions += f" AND ld.custom_enquriry_type = '{filters.get('enq_type')}'"
+
     data = frappe.db.sql(f"""
         SELECT
-            ROW_NUMBER() OVER() as sr_no,
+
+            ROW_NUMBER() OVER(ORDER BY op.creation DESC) as sr_no,
 
             op.custom_enq_details as enq_details,
+
+            op.party_name as lead,
 
             op.custom_pyro_alliedpyro_goa as pyro_allied_pyro_goa,
 
@@ -224,15 +248,18 @@ def get_data(filters):
 
             COALESCE(op.contact_person, ld.lead_name) as customer_contact_person,
 
-            COALESCE(op.contact_mobile, ld.phone) as customer_contact_no,
+            CONCAT_WS(
+                ' / ',
+                NULLIF(op.contact_mobile, ''),
+                NULLIF(op.phone, ''),
+                NULLIF(op.whatsapp, '')
+            ) as customer_contact_no,
 
             COALESCE(op.contact_email, ld.email_id) as customer_email_id,
 
-            CONCAT(
-                IFNULL(op.custom_po_no, ''),
-                ' / ',
-                IFNULL(op.custom_po_date, '')
-            ) as po_no_date,
+            op.custom_po_no as po_no,
+
+            op.custom_po_date as po_date,
 
             op.custom_po_value as po_value,
 
@@ -247,7 +274,7 @@ def get_data(filters):
         WHERE op.docstatus < 2
         {conditions}
 
-        ORDER BY op.creation DESC
+        ORDER BY sr_no ASC
 
     """, as_dict=True)
 
