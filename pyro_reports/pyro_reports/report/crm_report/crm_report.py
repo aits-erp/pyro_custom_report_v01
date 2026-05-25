@@ -185,6 +185,7 @@ def get_data(filters):
             ROW_NUMBER() OVER() as sr_no,
 
             op.custom_enq_details as enq_details,
+
             op.custom_pyro_alliedpyro_goa as pyro_allied_pyro_goa,
 
             '' as customer_type,
@@ -192,6 +193,7 @@ def get_data(filters):
             op.custom_private__p_or_govt__g as private_or_govt,
 
             ld.custom_enquriry_type as enq_type,
+
             op.transaction_date as enq_received_on,
 
             op.custom_quotation as qtn_no,
@@ -204,7 +206,7 @@ def get_data(filters):
 
             op.custom_offer_status_ as offer_status,
 
-            COALESCE(op.city, ld.city) as place,
+            COALESCE(op.state, ld.state) as place,
 
             op.custom_sales_rep as sales_rep,
 
@@ -222,7 +224,7 @@ def get_data(filters):
 
             COALESCE(op.contact_person, ld.lead_name) as customer_contact_person,
 
-            COALESCE(op.contact_mobile, ld.custom_phone_no) as customer_contact_no,
+            COALESCE(op.contact_mobile, ld.phone) as customer_contact_no,
 
             COALESCE(op.contact_email, ld.email_id) as customer_email_id,
 
@@ -239,12 +241,14 @@ def get_data(filters):
         FROM `tabOpportunity` op
 
         LEFT JOIN `tabLead` ld
-        ON op.lead = ld.name
+        ON ld.name = op.party_name
+        AND op.opportunity_from = 'Lead'
 
         WHERE op.docstatus < 2
         {conditions}
 
         ORDER BY op.creation DESC
+
     """, as_dict=True)
 
     return data
