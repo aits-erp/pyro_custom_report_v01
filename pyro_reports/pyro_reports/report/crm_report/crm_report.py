@@ -1,3 +1,287 @@
+# import frappe
+
+
+# def execute(filters=None):
+#     columns = get_columns()
+#     data = get_data(filters)
+
+#     return columns, data
+
+
+# def get_columns():
+#     columns = [
+#         {
+#             "label": "SR NO.",
+#             "fieldname": "sr_no",
+#             "fieldtype": "Int",
+#             "width": 80
+#         },
+#         {
+#             "label": "ENQ DETAILS",
+#             "fieldname": "enq_details",
+#             "fieldtype": "Data",
+#             "width": 250
+#         },
+#         {
+#             "label": "LEAD",
+#             "fieldname": "lead",
+#             "fieldtype": "Data",
+#             "width": 180
+#         },
+#         {
+#             "label": "Pyro Allied/Pyro Goa",
+#             "fieldname": "pyro_allied_pyro_goa",
+#             "fieldtype": "Data",
+#             "width": 180
+#         },
+#         {
+#             "label": "Customer Type",
+#             "fieldname": "customer_type",
+#             "fieldtype": "Data",
+#             "width": 150
+#         },
+#         {
+#             "label": "Private - P OR Govt - G",
+#             "fieldname": "private_or_govt",
+#             "fieldtype": "Data",
+#             "width": 180
+#         },
+#         {
+#             "label": "Enq Type",
+#             "fieldname": "enq_type",
+#             "fieldtype": "Data",
+#             "width": 150
+#         },
+#         {
+#             "label": "ENQ RECEIVED ON",
+#             "fieldname": "enq_received_on",
+#             "fieldtype": "Date",
+#             "width": 130
+#         },
+#         {
+#             "label": "QTN. NO",
+#             "fieldname": "qtn_no",
+#             "fieldtype": "Data",
+#             "width": 120
+#         },
+#         {
+#             "label": "QTN. DATE",
+#             "fieldname": "qtn_date",
+#             "fieldtype": "Date",
+#             "width": 120
+#         },
+#         {
+#             "label": "OFFER/QTN SENT ON DATE",
+#             "fieldname": "offer_qtn_sent_on_date",
+#             "fieldtype": "Date",
+#             "width": 180
+#         },
+#         {
+#             "label": "CUSTOMER",
+#             "fieldname": "customer",
+#             "fieldtype": "Data",
+#             "width": 220
+#         },
+#         {
+#             "label": "Offer Status",
+#             "fieldname": "offer_status",
+#             "fieldtype": "Data",
+#             "width": 140
+#         },
+#         {
+#             "label": "PLACE",
+#             "fieldname": "place",
+#             "fieldtype": "Data",
+#             "width": 150
+#         },
+#         {
+#             "label": "SALES REP.",
+#             "fieldname": "sales_rep",
+#             "fieldtype": "Data",
+#             "width": 150
+#         },
+#         {
+#             "label": "PROJECT/CLIENT",
+#             "fieldname": "project_client",
+#             "fieldtype": "Data",
+#             "width": 180
+#         },
+#         {
+#             "label": "ITEM/PRODUCT",
+#             "fieldname": "item_product",
+#             "fieldtype": "Data",
+#             "width": 180
+#         },
+#         {
+#             "label": "MATERIAL/SPECIAL DESIGN",
+#             "fieldname": "material_special_design",
+#             "fieldtype": "Data",
+#             "width": 200
+#         },
+#         {
+#             "label": "QTY OFFERED",
+#             "fieldname": "qty_offered",
+#             "fieldtype": "Float",
+#             "width": 120
+#         },
+#         {
+#             "label": "OFFER VALUE RS.",
+#             "fieldname": "offer_value_rs",
+#             "fieldtype": "Currency",
+#             "width": 150
+#         },
+#         {
+#             "label": "Expected in",
+#             "fieldname": "expected_in",
+#             "fieldtype": "Date",
+#             "width": 130
+#         },
+#         {
+#             "label": "CUSTOMER CONTACT PERSON",
+#             "fieldname": "customer_contact_person",
+#             "fieldtype": "Data",
+#             "width": 220
+#         },
+#         {
+#             "label": "CUSTOMER CONTACT NO.",
+#             "fieldname": "customer_contact_no",
+#             "fieldtype": "Data",
+#             "width": 220
+#         },
+#         {
+#             "label": "CUSTOMER EMAIL ID",
+#             "fieldname": "customer_email_id",
+#             "fieldtype": "Data",
+#             "width": 220
+#         },
+#         {
+#             "label": "PO NO",
+#             "fieldname": "po_no",
+#             "fieldtype": "Data",
+#             "width": 180
+#         },
+#         {
+#             "label": "PO DATE",
+#             "fieldname": "po_date",
+#             "fieldtype": "Date",
+#             "width": 140
+#         },
+#         {
+#             "label": "PO VALUE",
+#             "fieldname": "po_value",
+#             "fieldtype": "Currency",
+#             "width": 140
+#         },
+#         {
+#             "label": "PO Received",
+#             "fieldname": "po_received",
+#             "fieldtype": "Date",
+#             "width": 140
+#         }
+#     ]
+
+#     return columns
+
+
+# def get_data(filters):
+#     conditions = ""
+
+#     if filters.get("from_date"):
+#         conditions += f" AND op.transaction_date >= '{filters.get('from_date')}'"
+
+#     if filters.get("to_date"):
+#         conditions += f" AND op.transaction_date <= '{filters.get('to_date')}'"
+
+#     if filters.get("sales_rep"):
+#         conditions += f" AND op.custom_sales_rep = '{filters.get('sales_rep')}'"
+
+#     if filters.get("customer"):
+#         conditions += f" AND op.customer_name = '{filters.get('customer')}'"
+
+#     if filters.get("enq_type"):
+#         conditions += f" AND ld.custom_enquriry_type = '{filters.get('enq_type')}'"
+
+#     data = frappe.db.sql(f"""
+#         SELECT
+
+#             ROW_NUMBER() OVER(ORDER BY op.creation DESC) as sr_no,
+
+#             op.custom_enq_details as enq_details,
+
+#             op.party_name as lead,
+
+#             op.custom_pyro_alliedpyro_goa as pyro_allied_pyro_goa,
+
+#             '' as customer_type,
+
+#             op.custom_private__p_or_govt__g as private_or_govt,
+
+#             ld.custom_enquriry_type as enq_type,
+
+#             op.transaction_date as enq_received_on,
+
+#             op.custom_quotation as qtn_no,
+
+#             op.custom_qtn_date as qtn_date,
+
+#             op.custom_offer_qtn_sent_on_date as offer_qtn_sent_on_date,
+
+#             op.customer_name as customer,
+
+#             op.custom_offer_status_ as offer_status,
+
+#             COALESCE(op.state, ld.state) as place,
+
+#             op.custom_sales_rep as sales_rep,
+
+#             op.custom_project_client as project_client,
+
+#             op.custom_item_product as item_product,
+
+#             op.custom_material_special_design as material_special_design,
+
+#             op.custom_qty_offered as qty_offered,
+
+#             op.custom_offer_value_rs as offer_value_rs,
+
+#             op.expected_closing as expected_in,
+
+#             COALESCE(op.contact_person, ld.lead_name) as customer_contact_person,
+
+#             CONCAT_WS(
+#                 ' / ',
+#                 NULLIF(op.contact_mobile, ''),
+#                 NULLIF(op.phone, ''),
+#                 NULLIF(op.whatsapp, '')
+#             ) as customer_contact_no,
+
+#             COALESCE(op.contact_email, ld.email_id) as customer_email_id,
+
+#             op.custom_po_no as po_no,
+
+#             op.custom_po_date as po_date,
+
+#             op.custom_po_value as po_value,
+
+#             op.custom_po_received as po_received
+
+#         FROM `tabOpportunity` op
+
+#         LEFT JOIN `tabLead` ld
+#         ON ld.name = op.party_name
+#         AND op.opportunity_from = 'Lead'
+
+#         WHERE op.docstatus < 2
+#         {conditions}
+
+#         ORDER BY sr_no ASC
+
+#     """, as_dict=True)
+
+#     return data
+
+
+
 import frappe
 
 
@@ -185,21 +469,27 @@ def get_columns():
 
 def get_data(filters):
     conditions = ""
+    values = {}
 
     if filters.get("from_date"):
-        conditions += f" AND op.transaction_date >= '{filters.get('from_date')}'"
+        conditions += " AND op.transaction_date >= %(from_date)s"
+        values["from_date"] = filters.get("from_date")
 
     if filters.get("to_date"):
-        conditions += f" AND op.transaction_date <= '{filters.get('to_date')}'"
+        conditions += " AND op.transaction_date <= %(to_date)s"
+        values["to_date"] = filters.get("to_date")
 
     if filters.get("sales_rep"):
-        conditions += f" AND op.custom_sales_rep = '{filters.get('sales_rep')}'"
+        conditions += " AND op.custom_sales_rep = %(sales_rep)s"
+        values["sales_rep"] = filters.get("sales_rep")
 
     if filters.get("customer"):
-        conditions += f" AND op.customer_name = '{filters.get('customer')}'"
+        conditions += " AND op.customer_name = %(customer)s"
+        values["customer"] = filters.get("customer")
 
     if filters.get("enq_type"):
-        conditions += f" AND ld.custom_enquriry_type = '{filters.get('enq_type')}'"
+        conditions += " AND ld.custom_enquriry_type = %(enq_type)s"
+        values["enq_type"] = filters.get("enq_type")
 
     data = frappe.db.sql(f"""
         SELECT
@@ -276,6 +566,6 @@ def get_data(filters):
 
         ORDER BY sr_no ASC
 
-    """, as_dict=True)
+    """, values, as_dict=True)
 
     return data
