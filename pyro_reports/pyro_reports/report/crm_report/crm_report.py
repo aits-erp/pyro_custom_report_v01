@@ -185,21 +185,27 @@
 
 # def get_data(filters):
 #     conditions = ""
+#     values = {}
 
 #     if filters.get("from_date"):
-#         conditions += f" AND op.transaction_date >= '{filters.get('from_date')}'"
+#         conditions += " AND op.transaction_date >= %(from_date)s"
+#         values["from_date"] = filters.get("from_date")
 
 #     if filters.get("to_date"):
-#         conditions += f" AND op.transaction_date <= '{filters.get('to_date')}'"
+#         conditions += " AND op.transaction_date <= %(to_date)s"
+#         values["to_date"] = filters.get("to_date")
 
 #     if filters.get("sales_rep"):
-#         conditions += f" AND op.custom_sales_rep = '{filters.get('sales_rep')}'"
+#         conditions += " AND op.custom_sales_rep = %(sales_rep)s"
+#         values["sales_rep"] = filters.get("sales_rep")
 
 #     if filters.get("customer"):
-#         conditions += f" AND op.customer_name = '{filters.get('customer')}'"
+#         conditions += " AND op.customer_name = %(customer)s"
+#         values["customer"] = filters.get("customer")
 
 #     if filters.get("enq_type"):
-#         conditions += f" AND ld.custom_enquriry_type = '{filters.get('enq_type')}'"
+#         conditions += " AND ld.custom_enquriry_type = %(enq_type)s"
+#         values["enq_type"] = filters.get("enq_type")
 
 #     data = frappe.db.sql(f"""
 #         SELECT
@@ -276,10 +282,9 @@
 
 #         ORDER BY sr_no ASC
 
-#     """, as_dict=True)
+#     """, values, as_dict=True)
 
 #     return data
-
 
 
 import frappe
@@ -461,6 +466,24 @@ def get_columns():
             "fieldname": "po_received",
             "fieldtype": "Date",
             "width": 140
+        },
+        {
+            "label": "Customer Type",
+            "fieldname": "custom_customer_type",
+            "fieldtype": "Data",
+            "width": 150
+        },
+        {
+            "label": "Group Unit",
+            "fieldname": "custom_group_unit",
+            "fieldtype": "Data",
+            "width": 150
+        },
+        {
+            "label": "Type of Entity",
+            "fieldname": "custom_type_of_entity",
+            "fieldtype": "Data",
+            "width": 150
         }
     ]
 
@@ -553,7 +576,13 @@ def get_data(filters):
 
             op.custom_po_value as po_value,
 
-            op.custom_po_received as po_received
+            op.custom_po_received as po_received,
+
+            op.custom_customer_type as custom_customer_type,
+
+            op.custom_group_unit as custom_group_unit,
+
+            op.custom_type_of_entity as custom_type_of_entity
 
         FROM `tabOpportunity` op
 
