@@ -1,5 +1,238 @@
 # import frappe
 
+
+# def execute(filters=None):
+#     columns = get_columns()
+#     data = get_data(filters)
+
+#     return columns, data
+
+
+# def get_columns():
+#     columns = [
+#         {
+#             "label": "SR NO.",
+#             "fieldname": "sr_no",
+#             "fieldtype": "Int",
+#             "width": 80
+#         },
+#         {
+#             "label": "ENQ DETAILS",
+#             "fieldname": "enq_details",
+#             "fieldtype": "Data",
+#             "width": 250
+#         },
+#         {
+#             "label": "LEAD",
+#             "fieldname": "lead",
+#             "fieldtype": "Data",
+#             "width": 180
+#         },
+#         {
+#             "label": "Enq Type",
+#             "fieldname": "enq_type",
+#             "fieldtype": "Data",
+#             "width": 150
+#         },
+#         {
+#             "label": "ENQ RECEIVED ON",
+#             "fieldname": "enq_received_on",
+#             "fieldtype": "Date",
+#             "width": 130
+#         },
+#         {
+#             "label": "QTN. NO",
+#             "fieldname": "qtn_no",
+#             "fieldtype": "Data",
+#             "width": 120
+#         },
+#         {
+#             "label": "QTN. DATE",
+#             "fieldname": "qtn_date",
+#             "fieldtype": "Date",
+#             "width": 120
+#         },
+#         {
+#             "label": "OFFER/QTN SENT ON DATE",
+#             "fieldname": "offer_qtn_sent_on_date",
+#             "fieldtype": "Date",
+#             "width": 180
+#         },
+#         {
+#             "label": "CUSTOMER",
+#             "fieldname": "customer",
+#             "fieldtype": "Data",
+#             "width": 220
+#         },
+#         {
+#             "label": "Offer Status",
+#             "fieldname": "offer_status",
+#             "fieldtype": "Data",
+#             "width": 140
+#         },
+#         {
+#             "label": "PLACE",
+#             "fieldname": "place",
+#             "fieldtype": "Data",
+#             "width": 150
+#         },
+#         {
+#             "label": "SALES REP.",
+#             "fieldname": "sales_rep",
+#             "fieldtype": "Data",
+#             "width": 150
+#         },
+#         {
+#             "label": "PROJECT/CLIENT",
+#             "fieldname": "project_client",
+#             "fieldtype": "Data",
+#             "width": 180
+#         },
+#         {
+#             "label": "ITEM/PRODUCT",
+#             "fieldname": "item_product",
+#             "fieldtype": "Data",
+#             "width": 180
+#         },
+#         {
+#             "label": "MATERIAL/SPECIAL DESIGN",
+#             "fieldname": "material_special_design",
+#             "fieldtype": "Data",
+#             "width": 200
+#         },
+#         {
+#             "label": "QTY OFFERED",
+#             "fieldname": "qty_offered",
+#             "fieldtype": "Float",
+#             "width": 120
+#         },
+#         {
+#             "label": "OFFER VALUE RS.",
+#             "fieldname": "offer_value_rs",
+#             "fieldtype": "Currency",
+#             "width": 150
+#         },
+#         {
+#             "label": "Expected in",
+#             "fieldname": "expected_in",
+#             "fieldtype": "Date",
+#             "width": 130
+#         },
+#         {
+#             "label": "CUSTOMER CONTACT PERSON",
+#             "fieldname": "customer_contact_person",
+#             "fieldtype": "Data",
+#             "width": 220
+#         },
+#         {
+#             "label": "CUSTOMER CONTACT NO.",
+#             "fieldname": "customer_contact_no",
+#             "fieldtype": "Data",
+#             "width": 220
+#         },
+#         {
+#             "label": "CUSTOMER EMAIL ID",
+#             "fieldname": "customer_email_id",
+#             "fieldtype": "Data",
+#             "width": 220
+#         },
+#         {
+#             "label": "PO NO",
+#             "fieldname": "po_no",
+#             "fieldtype": "Data",
+#             "width": 180
+#         },
+#         {
+#             "label": "PO DATE",
+#             "fieldname": "po_date",
+#             "fieldtype": "Date",
+#             "width": 140
+#         },
+#         {
+#             "label": "PO VALUE",
+#             "fieldname": "po_value",
+#             "fieldtype": "Currency",
+#             "width": 140
+#         },
+#         {
+#             "label": "PO Received",
+#             "fieldname": "po_received",
+#             "fieldtype": "Date",
+#             "width": 140
+#         },
+#         {
+#             "label": "Customer Type",
+#             "fieldname": "custom_customer_type",
+#             "fieldtype": "Data",
+#             "width": 150
+#         },
+#         {
+#             "label": "Group Unit",
+#             "fieldname": "custom_group_unit",
+#             "fieldtype": "Data",
+#             "width": 150
+#         },
+#         {
+#             "label": "Type of Entity",
+#             "fieldname": "custom_type_of_entity",
+#             "fieldtype": "Data",
+#             "width": 150
+#         },
+#         {
+#             "label": "Sales Person",
+#             "fieldname": "custom_sales_person",
+#             "fieldtype": "Link",
+#             "options": "Sales Person",
+#             "width": 150
+#         },
+#         {
+#             "label": "Territory",
+#             "fieldname": "territory",
+#             "fieldtype": "Link",
+#             "options": "Territory",
+#             "width": 150
+#         },
+#         {
+#             "label": "Date Follow Up-1",
+#             "fieldname": "custom_date",
+#             "fieldtype": "Date",
+#             "width": 140
+#         },
+#         {
+#             "label": "Date Follow Up-2",
+#             "fieldname": "custom_date_follow_up2",
+#             "fieldtype": "Date",
+#             "width": 140
+#         },
+#         {
+#             "label": "Next Action To Be Done",
+#             "fieldname": "custom_next_action_to_be_done",
+#             "fieldtype": "Data",
+#             "width": 200
+#         },
+#         {
+#             "label": "Follow Up-1",
+#             "fieldname": "custom_follow_up1",
+#             "fieldtype": "Data",
+#             "width": 200
+#         },
+#         {
+#             "label": "Follow Up-2",
+#             "fieldname": "custom_follow_up2",
+#             "fieldtype": "Data",
+#             "width": 200
+#         },
+#         {
+#             "label": "Outcome",
+#             "fieldname": "custom_outcome",
+#             "fieldtype": "Data",
+#             "width": 200
+#         }
+#     ]
+
+#     return columns
+
+
 # def get_data(filters):
 #     conditions = ""
 #     values = {}
@@ -132,10 +365,24 @@ def execute(filters=None):
 def get_columns():
     columns = [
         {
-            "label": "SR NO.",
-            "fieldname": "sr_no",
-            "fieldtype": "Int",
-            "width": 80
+            "label": "Lead Owner",
+            "fieldname": "lead_owner",
+            "fieldtype": "Data",
+            "width": 150
+        },
+        {
+            "label": "Lead No (ID)",
+            "fieldname": "lead_id",
+            "fieldtype": "Link",
+            "options": "Lead",
+            "width": 160
+        },
+        {
+            "label": "Opportunity No (ID)",
+            "fieldname": "opportunity_id",
+            "fieldtype": "Link",
+            "options": "Opportunity",
+            "width": 160
         },
         {
             "label": "ENQ DETAILS",
@@ -381,7 +628,11 @@ def get_data(filters):
     data = frappe.db.sql(f"""
         SELECT
 
-            ROW_NUMBER() OVER(ORDER BY op.creation DESC) as sr_no,
+            ld.lead_owner as lead_owner,
+
+            op.party_name as lead_id,
+
+            op.name as opportunity_id,
 
             op.custom_enq_details as enq_details,
 
@@ -467,7 +718,7 @@ def get_data(filters):
         WHERE op.docstatus < 2
         {conditions}
 
-        ORDER BY sr_no ASC
+        ORDER BY op.creation DESC
 
     """, values, as_dict=True)
 
