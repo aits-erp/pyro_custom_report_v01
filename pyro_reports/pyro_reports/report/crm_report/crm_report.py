@@ -359,6 +359,18 @@ def execute(filters=None):
     columns = get_columns()
     data = get_data(filters)
 
+    # Calculate total Offer Value
+    total_offer_value = sum(
+        (row.get("offer_value_rs") or 0)
+        for row in data
+    )
+
+    # Add total row at the bottom
+    data.append({
+        "enq_details": "TOTAL",
+        "offer_value_rs": total_offer_value
+    })
+
     return columns, data
 
 
