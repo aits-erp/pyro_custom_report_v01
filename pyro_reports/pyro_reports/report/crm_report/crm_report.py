@@ -254,7 +254,7 @@
 #         values["customer"] = filters.get("customer")
 
 #     if filters.get("enq_type"):
-#         conditions += " AND op.custom_enquriry_type = %(enq_type)s"
+#         conditions += " AND op.enquriry_type = %(enq_type)s"
 #         values["enq_type"] = filters.get("enq_type")
 
 #     data = frappe.db.sql(f"""
@@ -266,7 +266,7 @@
 
 #             op.party_name as lead,
 
-#             op.custom_enquriry_type as enq_type,
+#             op.enquriry_type as enq_type,
 
 #             COALESCE(op.transaction_date, DATE(op.creation)) as enq_received_on,
 
@@ -634,7 +634,7 @@ def get_data(filters):
         values["customer"] = filters.get("customer")
 
     if filters.get("enq_type"):
-        conditions += " AND op.custom_enquriry_type = %(enq_type)s"
+        conditions += " AND op.enquriry_type = %(enq_type)s"
         values["enq_type"] = filters.get("enq_type")
 
     data = frappe.db.sql(f"""
@@ -650,7 +650,7 @@ def get_data(filters):
 
             op.party_name as lead,
 
-            op.custom_enquriry_type as enq_type,
+            op.enquriry_type as enq_type,
 
             COALESCE(op.transaction_date, DATE(op.creation)) as enq_received_on,
 
