@@ -416,7 +416,7 @@ def get_columns():
         {"label": "QTN. NO", "fieldname": "qtn_no", "fieldtype": "Data", "width": 120},                                 # J
         {"label": "QTN. DATE", "fieldname": "qtn_date", "fieldtype": "Date", "width": 120},                             # K
         {"label": "OFFER/QTN SENT ON DATE", "fieldname": "offer_qtn_sent_on_date", "fieldtype": "Date", "width": 180},  # L
-        {"label": "DAYS TAKEN TO SUBMIT THE OFFER", "fieldname": "days_taken_to_submit_offer", "fieldtype": "Data", "width": 200},  # M (blank)
+        {"label": "DAYS TAKEN TO SUBMIT THE OFFER", "fieldname": "days_taken_to_submit_offer", "fieldtype": "Int", "width": 200},  # M
         {"label": "CUSTOMER", "fieldname": "customer", "fieldtype": "Data", "width": 220},                              # N
         {"label": "Territory", "fieldname": "territory", "fieldtype": "Link", "options": "Territory", "width": 150},    # O
         {"label": "SALES REP.", "fieldname": "sales_rep", "fieldtype": "Data", "width": 150},                           # P
@@ -470,8 +470,8 @@ def get_data(filters):
 
     data = frappe.db.sql(f"""
         SELECT
-            ld.lead_owner as lead_owner,
-            op.opportunity_owner as opportunity_owner,
+            COALESCE(lu.full_name, ld.lead_owner) as lead_owner,
+            COALESCE(ou.full_name, op.opportunity_owner) as opportunity_owner,
             op.transaction_date as enq_date,
             op.custom_customer_type as customer_type,
             op.custom_type_of_entity as type_of_entity,
@@ -485,7 +485,12 @@ def get_data(filters):
             op.custom_qtn_date as qtn_date,
             op.custom_offer_qtn_sent_on_date as offer_qtn_sent_on_date,
 
-            NULL as days_taken_to_submit_offer,
+            CASE
+                WHEN op.custom_qtn_date IS NOT NULL
+                 AND op.custom_offer_qtn_sent_on_date IS NOT NULL
+                THEN DATEDIFF(op.custom_offer_qtn_sent_on_date, op.custom_qtn_date) + 1
+                ELSE NULL
+            END as days_taken_to_submit_offer,
 
             COALESCE(op.customer_name, op.party_name) as customer,
             op.territory as territory,
@@ -534,6 +539,10 @@ def get_data(filters):
         LEFT JOIN `tabLead` ld
             ON ld.name = op.party_name
             AND op.opportunity_from = 'Lead'
+        LEFT JOIN `tabUser` lu
+            ON lu.name = ld.lead_owner
+        LEFT JOIN `tabUser` ou
+            ON ou.name = op.opportunity_owner
 
         WHERE op.docstatus < 2
         {conditions}
