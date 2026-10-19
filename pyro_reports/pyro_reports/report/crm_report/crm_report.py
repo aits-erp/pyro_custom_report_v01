@@ -38,7 +38,7 @@
 #         {"label": "SALES REP.", "fieldname": "sales_rep", "fieldtype": "Data", "width": 150},                           # P
 #         {"label": "PROJECT/CLIENT", "fieldname": "project_client", "fieldtype": "Data", "width": 180},                  # Q
 #         {"label": "ITEM/PRODUCT (OFFER)", "fieldname": "item_product", "fieldtype": "Data", "width": 180},              # R
-#         {"label": "Category", "fieldname": "category", "fieldtype": "Data", "width": 150},                              # S (blank)
+#         {"label": "Category", "fieldname": "category", "fieldtype": "Data", "width": 150},                              # S
 #         {"label": "MATERIAL/SPECIAL DESIGN", "fieldname": "material_special_design", "fieldtype": "Data", "width": 200},  # T
 #         {"label": "QTY (OFFERED)", "fieldname": "qty_offered", "fieldtype": "Float", "width": 120},                     # U
 #         {"label": "OFFER VALUE RS.", "fieldname": "offer_value_rs", "fieldtype": "Currency", "width": 150},             # V
@@ -102,19 +102,21 @@
 #             op.custom_offer_qtn_sent_on_date as offer_qtn_sent_on_date,
 
 #             CASE
-#                 WHEN op.custom_qtn_date IS NOT NULL
-#                  AND op.custom_offer_qtn_sent_on_date IS NOT NULL
-#                 THEN DATEDIFF(op.custom_offer_qtn_sent_on_date, op.custom_qtn_date) + 1
+#                 WHEN op.custom_offer_qtn_sent_on_date IS NOT NULL
+#                 THEN DATEDIFF(
+#                     op.custom_offer_qtn_sent_on_date,
+#                     COALESCE(op.transaction_date, DATE(op.creation))
+#                 ) + 1
 #                 ELSE NULL
 #             END as days_taken_to_submit_offer,
 
 #             COALESCE(op.customer_name, op.party_name) as customer,
 #             op.territory as territory,
-#             op.custom_sales_rep as sales_rep,
+#             op.custom_sales_person as sales_rep,
 #             op.custom_project_client as project_client,
 #             op.custom_item_product as item_product,
 
-#             NULL as category,
+#             op.custom_order_booking_category as category,
 
 #             op.custom_material_special_design as material_special_design,
 #             op.custom_qty_offered as qty_offered,
@@ -167,6 +169,8 @@
 #     """, values, as_dict=True)
 
 #     return data
+
+
 
 import frappe
 
@@ -320,7 +324,7 @@ def get_data(filters):
             op.custom_follow_up2 as follow_up2,
             op.custom_next_action_to_be_done as next_action,
 
-            op.party_name as lead_id,
+            ld.name as lead_id,
             op.name as opportunity_id
 
         FROM `tabOpportunity` op
